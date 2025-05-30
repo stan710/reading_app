@@ -27,7 +27,7 @@ from typing import List
 from langchain.prompts import ChatPromptTemplate
 import os
 from langchain_openai import ChatOpenAI
-import Chromadb.streamlit_app as st
+import streamlit as st
 
 CHROMA_PATH = "db1/"
 openai_key = os.getenv("OPENAI_API_KEY")
