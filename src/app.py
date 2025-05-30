@@ -82,7 +82,7 @@ def query_rag(query_text):
     prompt = prompt_template.format(context=context_text, question=query_text)
 
     # Initialize OpenAI chat model
-    model = ChatOpenAI()
+    model = ChatOpenAI(model_name="gpt-4o")
     
     # Generate response text based on the prompt
     response_text = model.predict(prompt)
