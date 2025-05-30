@@ -29,8 +29,14 @@ import os
 from langchain_openai import ChatOpenAI
 import streamlit as st
 
-CHROMA_PATH = "db1/"
+import requests
+import zipfile  
+
+#CHROMA_PATH = "db1/"
 openai_key = os.getenv("OPENAI_API_KEY")
+
+CHROMA_PATH = "https://github.com/stan710/reading_app/chroma_db"
+
 
 
 PROMPT_TEMPLATE = """
