@@ -14,10 +14,6 @@ certifi
 cffi 
 charset-normalizer 
 click==8.2.1
-conda-content-trust 
-conda-libmamba-solver 
-conda-package-handling 
-conda_package_streaming 
 cryptography 
 dataclasses-json==0.6.7
 distro 
