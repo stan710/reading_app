@@ -57,6 +57,7 @@ openai==1.82.1
 orjson==3.10.18
 packaging 
 pandas==2.2.3
+pip
 pillow==11.2.1
 platformdirs 
 pluggy 
