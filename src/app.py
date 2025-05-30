@@ -90,9 +90,6 @@ def query_rag(query_text):
 
 
 
-import Chromadb.streamlit_app as st
-from langchain_openai import ChatOpenAI
-
 # Function for RAG query
 def query_rag(query):
     llm = ChatOpenAI(model_name="gpt-4")
@@ -101,7 +98,7 @@ def query_rag(query):
     return formatted_response, response_text
 
 # Streamlit UI
-st.title("Query Interface - pls enter your question")
+st.title("Query Interface - pls enter your question relating to large language models (but I'm just a baby so may not make sense)")
 query = st.text_input("Enter your question:")
 if st.button("Submit"):
     formatted_response, response_text = query_rag(query)
