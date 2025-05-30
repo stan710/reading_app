@@ -39,7 +39,6 @@ langchain-core==0.3.63
 langchain-openai==0.3.18
 langchain-text-splitters==0.3.8
 langsmith==0.3.43
-libmambapy 
 MarkupSafe==3.0.2
 marshmallow==3.26.1
 menuinst 
