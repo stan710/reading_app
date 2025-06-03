@@ -49,13 +49,26 @@ Answer the question based only on the following context:
 Answer the question based on the above context: {question}
 """
 
-def query_rag(query):
 
- # Prepare the database
+def query_rag(query_text):
+    """
+    Query a Retrieval-Augmented Generation (RAG) system using Chroma database and OpenAI.
+
+    Args:
+    - query_text (str): The text to query the RAG system with.
+
+    Returns:
+    - formatted_response (str): Formatted response including the generated text and sources.
+    - response_text (str): The generated response text.
+    """
+    # YOU MUST - Use same embedding function as before
+    embedding_function = OpenAIEmbeddings()
+    
+    # Prepare the database
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=OpenAIEmbeddings(openai_api_key=openai_key, model="text-embedding-3-large"))
 
     # Retrieving the context from the DB using similarity search
-    results = db.similarity_search_with_relevance_scores(query, k=5)  # Retrieve top 5 results
+    results = db.similarity_search_with_relevance_scores(query_text, k=3)
     
     # Check if there are any matching results or if the relevance score is too low
     if len(results) == 0 or results[0][1] < 0.8:
@@ -66,25 +79,33 @@ def query_rag(query):
     
     # Create prompt template using context and query text
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-    prompt = prompt_template.format(context=context_text, question=query)
+    prompt = prompt_template.format(context=context_text, question=query_text)
 
-    llm = ChatOpenAI(model_name="gpt-4o", openai_api_key=openai_key)
-    llm_response = llm.invoke(prompt) 
+    # Initialize OpenAI chat model
+    model = ChatOpenAI(model_name="gpt-4o")
+    
+    # Generate response text based on the prompt
+    response_text = model.predict(prompt)
 
-    # Get sources
+    # Get sources of the matching documents
     sources = [doc.metadata.get("source", None) for doc, _score in results]
-
-    response_text = llm_response.content
-
-    # Format response text
+    
+    # Format and return response including generated text and sources
     formatted_response = f"Response: {response_text}\nSources: {sources}"
-    return formatted_response, response_text, sources
+    return formatted_response, response_text
 
+
+
+# Function for RAG query
+def query_rag(query):
+    llm = ChatOpenAI(model_name="gpt-4o")
+    formatted_response = llm.invoke(query)
+    response_text = formatted_response.content
+    return formatted_response, response_text
 
 # Streamlit UI
 st.title("Query Interface - pls enter your question relating to large language models (but I'm just a baby so may not make sense)")
 query = st.text_input("Enter your question:")
 if st.button("Submit"):
-    formatted_response, response_text, sources = query_rag(query)
-    st.subheader("Response")    
-    st.write(response_text, sources)
+    formatted_response, response_text = query_rag(query)
+    st.write(response_text)
