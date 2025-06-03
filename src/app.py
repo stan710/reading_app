@@ -28,7 +28,7 @@ openai_key = os.getenv("OPENAI_API_KEY")
 
 
 # Chroma db path
-CHROMA_PATH = "https://github.com/stan710/reading_app/chroma_db"
+CHROMA_PATH = "https://github.com/stan710/reading_app/db"
 
 
 # Define the prompt template 
