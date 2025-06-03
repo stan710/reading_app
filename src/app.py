@@ -95,14 +95,6 @@ def query_rag(query_text):
     return formatted_response, response_text, sources
 
 
-
-# Function for RAG query
-def query_rag(query):
-    llm = ChatOpenAI(model_name="gpt-4o")
-    formatted_response = llm.invoke(query)
-    response_text = formatted_response.content
-    return formatted_response, response_text
-
 # Streamlit UI
 st.title("Query Interface - pls enter your question relating to large language models (but I'm just a baby so may not make sense)")
 query = st.text_input("Enter your question:")
