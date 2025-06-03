@@ -98,6 +98,10 @@ def query_rag(query_text):
 def query_rag(query):
     llm = ChatOpenAI(model_name="gpt-4o")
     formatted_response = llm.invoke(query)
+    # Get sources of the matching documents
+    sources = [doc.metadata.get("source", None) for doc, _score in results]
+     # Format and return response including generated text and sources
+    formatted_response = f"Response: {response_text}\nSources: {sources}"
     response_text = formatted_response.content
     return formatted_response, response_text, sources
 
