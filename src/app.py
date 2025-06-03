@@ -50,7 +50,7 @@ Answer the question based on the above context: {question}
 """
 
 
-def query_rag(query_text):
+def query_rag(query)
     """
     Query a Retrieval-Augmented Generation (RAG) system using Chroma database and OpenAI.
 
@@ -68,7 +68,7 @@ def query_rag(query_text):
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=OpenAIEmbeddings(openai_api_key=openai_key, model="text-embedding-3-large"))
 
     # Retrieving the context from the DB using similarity search
-    results = db.similarity_search_with_relevance_scores(query_text, k=3)
+    results = db.similarity_search_with_relevance_scores(query, k=5)  # Retrieve top 5 results
     
     # Check if there are any matching results or if the relevance score is too low
     if len(results) == 0 or results[0][1] < 0.8:
@@ -79,7 +79,7 @@ def query_rag(query_text):
     
     # Create prompt template using context and query text
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
-    prompt = prompt_template.format(context=context_text, question=query_text)
+    prompt = prompt_template.format(context=context_text, question=query)
 
     # Initialize OpenAI chat model
     model = ChatOpenAI(model_name="gpt-4o")
