@@ -1,3 +1,16 @@
+
+
+import subprocess
+import sys
+import os
+import streamlit as st
+from dotenv import load_dotenv
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores.chroma import Chroma
+from langchain.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+
+
 # Install necessary packages
 def install_package(package):
     try:
@@ -10,16 +23,6 @@ install_package("langchain")
 install_package("langchain-community")
 install_package("langchain_openai")
 install_package("streamlit")
-import subprocess
-import sys
-import os
-import streamlit as st
-from dotenv import load_dotenv
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores.chroma import Chroma
-from langchain.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
-
 
 
 # Load API key
