@@ -49,22 +49,9 @@ Answer the question based only on the following context:
 Answer the question based on the above context: {question}
 """
 
+def query_rag(query):
 
-def query_rag(query)
-    """
-    Query a Retrieval-Augmented Generation (RAG) system using Chroma database and OpenAI.
-
-    Args:
-    - query_text (str): The text to query the RAG system with.
-
-    Returns:
-    - formatted_response (str): Formatted response including the generated text and sources.
-    - response_text (str): The generated response text.
-    """
-    # YOU MUST - Use same embedding function as before
-    embedding_function = OpenAIEmbeddings()
-    
-    # Prepare the database
+ # Prepare the database
     db = Chroma(persist_directory=CHROMA_PATH, embedding_function=OpenAIEmbeddings(openai_api_key=openai_key, model="text-embedding-3-large"))
 
     # Retrieving the context from the DB using similarity search
@@ -81,30 +68,12 @@ def query_rag(query)
     prompt_template = ChatPromptTemplate.from_template(PROMPT_TEMPLATE)
     prompt = prompt_template.format(context=context_text, question=query)
 
-    # Initialize OpenAI chat model
-    model = ChatOpenAI(model_name="gpt-4o")
-    
-    # Generate response text based on the prompt
-    response_text = model.predict(prompt)
-
-    # Get sources of the matching documents
-    sources = [doc.metadata.get("source", None) for doc, _score in results]
-    
-    # Format and return response including generated text and sources
-    formatted_response = f"Response: {response_text}\nSources: {sources}"
-    return formatted_response, response_text, sources
-
-
-# Function for RAG query
-def query_rag(query):
-
-    llm = ChatOpenAI(model_name="gpt-4o")
-    llm_response = llm.invoke(prompt)  # Keep raw model response
+    llm = ChatOpenAI(model_name="gpt-4o", openai_api_key=openai_key)
+    llm_response = llm.invoke(prompt) 
 
     # Get sources
     sources = [doc.metadata.get("source", None) for doc, _score in results]
 
-    # Use `.content` safely now
     response_text = llm_response.content
 
     # Format response text
