@@ -109,6 +109,7 @@ def query_rag(query):
 
     # Format response text
     formatted_response = f"Response: {response_text}\nSources: {sources}"
+    return formatted_response, response_text, sources
 
 
 # Streamlit UI
