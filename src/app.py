@@ -1,13 +1,3 @@
-import subprocess
-import sys
-import os
-import streamlit as st
-from dotenv import load_dotenv
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores.chroma import Chroma
-from langchain.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
-
 # Install necessary packages
 def install_package(package):
     try:
@@ -20,16 +10,28 @@ install_package("langchain")
 install_package("langchain-community")
 install_package("langchain_openai")
 install_package("streamlit")
+import subprocess
+import sys
+import os
+import streamlit as st
+from dotenv import load_dotenv
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores.chroma import Chroma
+from langchain.prompts import ChatPromptTemplate
+from langchain_openai import ChatOpenAI
+
+
 
 # Load API key
 load_dotenv()
 openai_key = os.getenv("OPENAI_API_KEY")
 
-# Define Chroma database path
+
+# Chroma db path
 CHROMA_PATH = "https://github.com/stan710/reading_app/chroma_db"
 
-from langchain.prompts import ChatPromptTemplate
 
+# Define the prompt template 
 PROMPT_TEMPLATE = """
 Answer the question based only on the following context:
 
@@ -43,15 +45,16 @@ Answer the question based on the above context: {question}
 
 def query_rag(query_text):
     """
-    Query a Retrieval-Augmented Generation (RAG) system using Chroma database and OpenAI.
+    Query the Chroma database.
 
     Args:
-    - query_text (str): The text to query the RAG system with.
+    - query_text (str): The text to query the system with.
 
     Returns:
     - formatted_response (str): Formatted response including the generated text and sources.
     - response_text (str): The generated response text.
     """
+
     # YOU MUST - Use same embedding function as before
     embedding_function = OpenAIEmbeddings()
     
