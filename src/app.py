@@ -94,16 +94,24 @@ def query_rag(query_text):
     formatted_response = f"Response: {response_text}\nSources: {sources}"
     return formatted_response, response_text, sources
 
+
 # Function for RAG query
 def query_rag(query):
     llm = ChatOpenAI(model_name="gpt-4o")
     formatted_response = llm.invoke(query)
-    # Get sources of the matching documents
-    sources = [doc.metadata.get("source", None) for doc, _score in results]
-     # Format and return response including generated text and sources
-    formatted_response = f"Response: {response_text}\nSources: {sources}"
+    sources = formatted_response.metadata.get("source_documents", [])
     response_text = formatted_response.content
+    if not sources:
+        sources = ["No sources found."]
+    else:
+        sources = [source.metadata.get("source", "Unknown source") for source in sources]
+    if not response_text:
+        response_text = "No response generated."
+    if not sources:
+        sources = ["No sources found."]
+
     return formatted_response, response_text, sources
+
 
 # Streamlit UI
 st.title("Query Interface - pls enter your question relating to large language models (but I'm just a baby so may not make sense)")
