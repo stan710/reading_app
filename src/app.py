@@ -62,7 +62,7 @@ def query_rag(query_text):
     embedding_function = OpenAIEmbeddings()
     
     # Prepare the database
-    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function, distance_metric="cosine")
+    db = Chroma(persist_directory=CHROMA_PATH, embedding_function=embedding_function)
 
     # Retrieving the context from the DB using similarity search
     results = db.similarity_search_with_relevance_scores(query_text, k=3)
