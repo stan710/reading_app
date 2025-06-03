@@ -1,17 +1,6 @@
-
-
 import subprocess
 import sys
-import os
-import streamlit as st
-from dotenv import load_dotenv
-from langchain.embeddings import OpenAIEmbeddings
-from langchain.vectorstores.chroma import Chroma
-from langchain.prompts import ChatPromptTemplate
-from langchain_openai import ChatOpenAI
 
-
-# Install necessary packages
 def install_package(package):
     try:
         __import__(package)
@@ -19,22 +8,37 @@ def install_package(package):
         print(f"Installing {package}...")
         subprocess.check_call([sys.executable, "-m", "pip", "install", package])
 
+# Install langchain before using it
 install_package("langchain")
 install_package("langchain-community")
 install_package("langchain_openai")
 install_package("streamlit")
 
+from langchain.document_loaders.pdf import PyPDFDirectoryLoader # Importing PDF loader from Langchain
+from langchain.text_splitter import RecursiveCharacterTextSplitter # Importing text splitter from Langchain
+from langchain.embeddings import OpenAIEmbeddings # Importing OpenAI embeddings from Langchain
+from langchain.schema import Document # Importing Document schema from Langchain
+from langchain.vectorstores.chroma import Chroma # Importing Chroma vector store from Langchain
+from dotenv import load_dotenv # Importing dotenv to get API key from .env file
+from langchain.chat_models import ChatOpenAI # Import OpenAI LLM
+import os # Importing os module for operating system functionalities
+import shutil # Importing shutil module for high-level file operations
+from typing import List
+from langchain.prompts import ChatPromptTemplate
+import os
+from langchain_openai import ChatOpenAI
+import streamlit as st
 
-# Load API key
-load_dotenv()
+import requests
+import zipfile  
+
+#CHROMA_PATH = "db1/"
 openai_key = os.getenv("OPENAI_API_KEY")
 
-
-# Chroma db path
-CHROMA_PATH = "https://github.com/stan710/reading_app/db"
+CHROMA_PATH = "https://github.com/stan710/reading_app/chroma_db"
 
 
-# Define the prompt template 
+
 PROMPT_TEMPLATE = """
 Answer the question based only on the following context:
 
@@ -48,16 +52,15 @@ Answer the question based on the above context: {question}
 
 def query_rag(query_text):
     """
-    Query the Chroma database.
+    Query a Retrieval-Augmented Generation (RAG) system using Chroma database and OpenAI.
 
     Args:
-    - query_text (str): The text to query the system with.
+    - query_text (str): The text to query the RAG system with.
 
     Returns:
     - formatted_response (str): Formatted response including the generated text and sources.
     - response_text (str): The generated response text.
     """
-
     # YOU MUST - Use same embedding function as before
     embedding_function = OpenAIEmbeddings()
     
@@ -68,7 +71,7 @@ def query_rag(query_text):
     results = db.similarity_search_with_relevance_scores(query_text, k=3)
     
     # Check if there are any matching results or if the relevance score is too low
-    if len(results) == 0 or results[0][1] < 0.8:
+    if len(results) == 0 or results[0][1] < 0.7:
         print(f"Unable to find matching results.")
 
     # Combine context from matching documents
@@ -79,7 +82,7 @@ def query_rag(query_text):
     prompt = prompt_template.format(context=context_text, question=query_text)
 
     # Initialize OpenAI chat model
-    model = ChatOpenAI(model="gpt-4o", temperature=0, openai_api_key=openai_key)
+    model = ChatOpenAI(model_name="gpt-4o")
     
     # Generate response text based on the prompt
     response_text = model.predict(prompt)
@@ -92,8 +95,16 @@ def query_rag(query_text):
     return formatted_response, response_text
 
 
+
+# Function for RAG query
+def query_rag(query):
+    llm = ChatOpenAI(model_name="gpt-4o")
+    formatted_response = llm.invoke(query)
+    response_text = formatted_response.content
+    return formatted_response, response_text
+
 # Streamlit UI
-st.title("Query Interface - Ask about Large Language Models (still preliminary stage - pls bear with me)")
+st.title("Query Interface - pls enter your question relating to large language models (but I'm just a baby so may not make sense)")
 query = st.text_input("Enter your question:")
 if st.button("Submit"):
     formatted_response, response_text = query_rag(query)
