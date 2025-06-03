@@ -97,20 +97,18 @@ def query_rag(query_text):
 
 # Function for RAG query
 def query_rag(query):
-    llm = ChatOpenAI(model_name="gpt-4o")
-    formatted_response = llm.invoke(query)
-    sources = formatted_response.metadata.get("source_documents", [])
-    response_text = formatted_response.content
-    if not sources:
-        sources = ["No sources found."]
-    else:
-        sources = [source.metadata.get("source", "Unknown source") for source in sources]
-    if not response_text:
-        response_text = "No response generated."
-    if not sources:
-        sources = ["No sources found."]
 
-    return formatted_response, response_text, sources
+    llm = ChatOpenAI(model_name="gpt-4o")
+    llm_response = llm.invoke(prompt)  # Keep raw model response
+
+    # Get sources
+    sources = [doc.metadata.get("source", None) for doc, _score in results]
+
+    # Use `.content` safely now
+    response_text = llm_response.content
+
+    # Format response text
+    formatted_response = f"Response: {response_text}\nSources: {sources}"
 
 
 # Streamlit UI
