@@ -71,7 +71,7 @@ def query_rag(query_text):
     results = db.similarity_search_with_relevance_scores(query_text, k=3)
     
     # Check if there are any matching results or if the relevance score is too low
-    if len(results) == 0 or results[0][1] < 0.7:
+    if len(results) == 0 or results[0][1] < 0.8:
         print(f"Unable to find matching results.")
 
     # Combine context from matching documents
