@@ -90,7 +90,7 @@ def query_rag(query):
     
     # Format and return response including generated text and sources
     formatted_response = f"Response: {response_text}\nSources: {sources}"
-    return formatted_response, response_text, sources
+    return formatted_response, response_text
 
 
 
@@ -99,11 +99,7 @@ st.title("Query Interface - pls enter your question relating to large language m
 query = st.text_input("Enter your question:")
 
 if st.button("Submit"):
-    formatted_response, response_text, sources = query_rag(query)
+    formatted_response, response_text = query_rag(query)
     st.write("### Response:")
     st.write(response_text)
 
-    if sources:
-        st.write("### Sources:")
-        for source in sources:
-            st.write(f"- {source}")
