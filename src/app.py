@@ -90,7 +90,7 @@ def query_rag(query_text):
 
 
 # Streamlit UI
-st.title("Query Interface - Ask about Large Language Models")
+st.title("Query Interface - Ask about Large Language Models (still preliminary stage - pls bear with me)")
 query = st.text_input("Enter your question:")
 if st.button("Submit"):
     formatted_response, response_text = query_rag(query)
