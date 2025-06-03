@@ -13,6 +13,7 @@ install_package("langchain")
 install_package("langchain-community")
 install_package("langchain_openai")
 install_package("streamlit")
+install_package("chromadb")
 
 from langchain.document_loaders.pdf import PyPDFDirectoryLoader 
 from langchain.text_splitter import RecursiveCharacterTextSplitter 
@@ -28,6 +29,7 @@ from langchain.prompts import ChatPromptTemplate
 import os
 from langchain_openai import ChatOpenAI
 import streamlit as st
+import chromadb
 
 import requests
 import zipfile  

@@ -12,7 +12,8 @@ Brotli
 cachetools==5.5.2
 certifi 
 cffi 
-charset-normalizer 
+charset-normalizer
+chromadb 
 click==8.2.1
 cryptography 
 dataclasses-json==0.6.7
