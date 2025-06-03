@@ -29,7 +29,6 @@ from langchain.prompts import ChatPromptTemplate
 import os
 from langchain_openai import ChatOpenAI
 import streamlit as st
-import chromadb
 
 import requests
 import zipfile  
